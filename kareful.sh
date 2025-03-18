@@ -8,10 +8,12 @@ IFS=$' '
 DANGER_OPS=(
   "drain"
   "delete"
+  "get"
 )
 
 # dangerous contexts:
 DANGER_CONTEXTS=(
+"dev-aks"
   "staging"
   "production"
 )
@@ -24,7 +26,7 @@ if [[ -z $kubectl_executable ]]; then
 fi
 
 prompt_confirm() {
-  read -rp "Are you sure? [y/N] " -n 1 response
+  read -rp "Are you sure? [y/N] " response
   echo
   if [[ $response =~ ^[Yy]$ ]]; then
     return 0
