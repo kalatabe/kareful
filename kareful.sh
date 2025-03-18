@@ -13,7 +13,6 @@ DANGER_OPS=(
 
 # dangerous contexts:
 DANGER_CONTEXTS=(
-"dev-aks"
   "staging"
   "production"
 )
