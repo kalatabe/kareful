@@ -8,7 +8,6 @@ IFS=$' '
 DANGER_OPS=(
   "drain"
   "delete"
-  "get"
 )
 
 # dangerous contexts:
