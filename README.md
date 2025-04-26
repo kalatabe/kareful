@@ -19,9 +19,9 @@ Operation cancelled.
 ## Installation
 
 1. Clone the repository
-2. Alias `kubectl` to `kareful.sh`
+2. Source `kareful.sh` in your shell .rc, for example `echo "source /path/to/kareful.sh >> ~/.zshrc"`
 
 ## Configuration
 
 Open `kareful.sh` with your favorite text editor and edit the variables `DANGER_OPS` and `DANGER_CONTEXTS` to your
-liking.
+liking. Don't forget to restart your shell or re-source the RC afterward.

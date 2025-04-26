@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 # Usage:
-# alias kubectl='kareful.sh'
+# source kareful.sh
 
-set -eu
-IFS=$' '
 # destructive operations:
 DANGER_OPS=(
   "drain"
@@ -16,7 +14,7 @@ DANGER_CONTEXTS=(
   "production"
 )
 
-
+IFS=$' '
 kubectl_executable=$(which kubectl)
 if [[ -z $kubectl_executable ]]; then
   echo "$kubectl_executable not found in PATH"
@@ -24,23 +22,25 @@ if [[ -z $kubectl_executable ]]; then
 fi
 
 prompt_confirm() {
-  read -rp "Are you sure? [y/N] " response
+  echo -n "Are you sure? [y/N] "
+  read response
   echo
-  if [[ $response =~ ^[Yy]$ ]]; then
-    return 0
-  else
-    return 1
-  fi
+  case "$response" in
+    [Yy]*) return 0 ;;
+    *) return 1 ;;
+  esac
 }
 
 
-if [[ ${DANGER_CONTEXTS[@]} =~ $($kubectl_executable config current-context ) ]] && [[ ${DANGER_OPS[@]} =~ "$1" ]]; then
-  if prompt_confirm; then
-    $kubectl_executable "$@"
+kubectl() {
+  if [[ ${DANGER_CONTEXTS[@]} =~ $($kubectl_executable config current-context) ]] && [[ ${DANGER_OPS[@]} =~ "$1" ]]; then
+    if prompt_confirm; then
+      $kubectl_executable "$@"
+    else
+      echo "Operation cancelled."
+      return 1
+    fi
   else
-    echo "Operation cancelled."
-    exit 1
+    $kubectl_executable "$@"
   fi
-else
-  $kubectl_executable "$@"
-fi
+}
